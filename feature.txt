@@ -1,0 +1,114 @@
+## Munchies Cafe Website — Features & User Flow
+
+### 1) Landing / Home page
+- **Purpose**: Showcase the restaurant brand, sections, and actions.
+- **Flow**:
+  - User scrolls through sections (Menu, About, Reviews, Contact).
+  - User can jump to sections using navigation links (anchors).
+
+### 2) Sticky Bottom Action Bar
+- **Feature**: Persistent quick actions fixed at the bottom.
+- **Actions**:
+  - **Call**: opens phone dialer using `tel:` link.
+  - **WhatsApp**: opens WhatsApp chat to the restaurant’s WhatsApp number.
+  - **Maps**: opens Google Maps link in a new tab.
+  - **Plate (Cart)**: appears only when at least one dish is added to Plate. Opens the Plate order popup.
+- **Flow**:
+  - User taps any action at any time.
+  - If Plate has items, user taps **Plate** → opens Plate modal (multi-item order).
+
+### 3) Menu Categories + Filtering
+- **Feature**: Menu can be filtered by category using category pills.
+- **Flow**:
+  - User clicks a category pill → menu list updates to show only items in that category.
+  - Menu cards animate into view on category change.
+
+### 4) Menu Grid (Dish Cards)
+- **Feature**: Each dish is displayed with image, veg/non-veg badge, name, short description, and price.
+- **Flow**:
+  - User clicks a dish card → opens Dish Details popup.
+  - User can also use **Add to Plate** directly on the card:
+    - Clicking **Add to Plate** toggles selection.
+    - Selected dish button changes to **In Plate**.
+
+### 5) Dish Details Popup (Modal)
+- **Feature**: Popup shows full dish details and ordering actions.
+- **Popup includes**:
+  - Dish image, name, description, category label, veg/non-veg type, and price.
+- **Flow**:
+  - User clicks dish card → popup opens.
+  - User can:
+    - **Add to Plate / In Plate** (toggle selection) without placing order immediately.
+    - **Order Now** to place a single-dish order via WhatsApp.
+  - **UI behavior**:
+    - Background scrolling is locked while popup is open.
+    - Popup is scrollable internally and positioned to avoid top/bottom sticky bars.
+
+### 6) Single Dish “Order Now” Flow (WhatsApp)
+- **Feature**: Place order for the currently opened dish.
+- **Inputs**:
+  - **Name**
+  - **Address**
+  - **Quantity** (increase/decrease; minimum 1)
+- **Flow**:
+  - User opens dish popup → clicks **Order Now**.
+  - User fills name + address, adjusts quantity.
+  - User clicks **Continue on WhatsApp** → redirects to WhatsApp with a pre-written message containing:
+    - customer name
+    - dish name
+    - category
+    - veg/non-veg type
+    - unit price
+    - quantity
+    - total price
+    - address
+  - After placing single-dish order, that dish is removed from Plate (if it was selected).
+
+### 7) Plate (Cart) — Multi Dish Selection
+- **Feature**: Add multiple dishes to Plate and order together.
+- **Key behavior**:
+  - Plate selections persist even if user closes the dish popup.
+  - Dishes remain marked **In Plate** until user removes them or completes the order.
+- **Flow**:
+  - User clicks **Add to Plate** on cards or inside dish popup.
+  - Sticky bottom bar shows **Plate** button with item count.
+  - User taps **Plate** → opens Plate modal.
+
+### 8) Plate Modal (Multi Item Order Popup)
+- **Feature**: Checkout screen for ordering multiple dishes together.
+- **Shows**:
+  - All selected dishes in a list.
+  - Each dish with:
+    - price per item
+    - quantity controls (− / +)
+    - remove button
+  - Total item count and grand total.
+- **Inputs**:
+  - **Name**
+  - **Address**
+- **Flow**:
+  - User opens Plate modal.
+  - User increases/decreases quantities (dynamic total updates).
+  - User removes any dish (dish also becomes unselected in menu cards).
+  - User enters name + address.
+  - User clicks **Continue on WhatsApp** → redirects to WhatsApp with a combined order message containing:
+    - customer name
+    - list of all items with: name, unit price, quantity, line total
+    - grand total
+    - address
+  - After placing the plate order:
+    - Plate is cleared.
+
+### 9) Plate State Persistence (Caching)
+- **Feature**: Plate is cached in localStorage to survive refreshes.
+- **Flow**:
+  - On page load: Plate is restored from localStorage.
+  - On every change: Plate is saved back to localStorage.
+  - Sticky bottom bar reads the stored Plate count and updates when plate changes.
+
+### 10) Visual + Motion Effects
+- **Feature**: Smooth animations for menu items.
+- **Flow**:
+  - First scroll reveal: menu cards animate when the menu section enters the viewport.
+  - Category switch: menu cards animate in after filtering.
+

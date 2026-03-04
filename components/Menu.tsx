@@ -514,7 +514,7 @@ export default function Menu({ items, categories }: MenuProps) {
                                     <input
                                         value={customerName}
                                         onChange={(e) => setCustomerName(e.target.value)}
-                                        className="w-full rounded-[2px] bg-bg-secondary border border-border outline-none text-[12px] text-brand-primary px-3 py-2 focus:border-accent/80"
+                                        className="w-full rounded-[2px] bg-bg-secondary border border-border outline-none text-[12px] text-yellow-500 font-bold px-3 py-2 focus:border-accent/80"
                                         placeholder="Your name"
                                     />
 
@@ -525,7 +525,7 @@ export default function Menu({ items, categories }: MenuProps) {
                                         value={address}
                                         onChange={(e) => setAddress(e.target.value)}
                                         rows={3}
-                                        className="w-full rounded-[2px] bg-bg-secondary border border-border outline-none text-[12px] text-brand-primary px-3 py-2 resize-none focus:border-accent/80"
+                                        className="w-full rounded-[2px] bg-bg-secondary border border-border outline-none text-[12px] text-yellow-500 font-bold px-3 py-2 resize-none focus:border-accent/80"
                                         placeholder="Enter your full delivery address"
                                     />
 
