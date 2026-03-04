@@ -60,8 +60,6 @@ export default function Menu({ items, categories }: MenuProps) {
         })
     }
 
-    const openPlate = () => setIsPlateOpen(true)
-
     const closePlate = () => {
         setIsPlateOpen(false)
         setCustomerName('')
