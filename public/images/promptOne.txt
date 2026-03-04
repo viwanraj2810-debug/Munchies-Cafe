@@ -1,0 +1,792 @@
+═══════════════════════════════════════════════════════════════════════
+FULL PROJECT BUILD PROMPT — NEXT.JS 14 + TYPESCRIPT
+LUXURY RESTAURANT WEBSITE FRAMEWORK
+One-time paste. Build complete. No shortcuts.
+═══════════════════════════════════════════════════════════════════════
+
+You are a senior frontend engineer and luxury brand designer.
+Build a complete, production-ready Next.js 14 restaurant website
+exactly as described in this brief. Do not summarize. Do not skip
+any section. Write every file completely from start to finish.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TECH STACK — EXACT REQUIREMENTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+- Next.js 14 (App Router — use app/ directory, NOT pages/)
+- TypeScript (strict mode, tsconfig strict: true)
+- Tailwind CSS v3 (utility classes only, no custom CSS files)
+- GSAP 3 + ScrollTrigger (npm package: gsap)
+- next/font for Google Fonts (Cormorant Garamond + Jost)
+- next/image for all images (with proper width/height/priority)
+- No shadcn. No Framer Motion. No MUI. No styled-components.
+- ESLint + Prettier configured
+- All components in TypeScript with proper interface definitions
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PROJECT STRUCTURE — GENERATE ALL FILES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Generate every file listed below. Do not skip any file.
+
+Munchies Cafe-restaurant/
+├── app/
+│   ├── layout.tsx              ← Root layout. Fonts. Metadata. StickyBar.
+│   ├── page.tsx                ← Main page. Assembles all sections.
+│   ├── globals.css             ← CSS custom properties + Tailwind base only
+│   └── favicon.ico
+├── components/
+│   ├── Header.tsx              ← Sticky header. Transparent → solid on scroll.
+│   ├── Hero.tsx                ← Full-screen hero. GSAP entrance timeline.
+│   ├── MarqueeStrip.tsx        ← Scrolling text strip.
+│   ├── SignatureDish.tsx       ← Cinematic dish showcase. GSAP parallax.
+│   ├── ExperienceBar.tsx       ← 3-stat trust bar. GSAP stagger.
+│   ├── Menu.tsx                ← Category pills + scrollable menu items.
+│   ├── About.tsx               ← 3-beat narrative section.
+│   ├── Reviews.tsx             ← Hero quote + compact cards.
+│   ├── Contact.tsx             ← Map embed + contact tiles.
+│   ├── Footer.tsx              ← Brand signature footer.
+│   └── StickyBar.tsx           ← Fixed bottom CTA bar. Always visible.
+├── lib/
+│   └── data.ts                 ← All restaurant content as TypeScript constants.
+├── types/
+│   └── index.ts                ← All shared TypeScript interfaces.
+├── hooks/
+│   └── useGSAP.ts              ← Custom hook for GSAP + ScrollTrigger cleanup.
+├── public/
+│   └── images/                 ← (use Unsplash food URLs via next/image)
+├── tailwind.config.ts          ← Extended with brand tokens
+├── tsconfig.json               ← Strict mode enabled
+├── package.json                ← All dependencies listed
+└── next.config.js              ← Image domains configured for Unsplash
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+DESIGN TOKENS — DARK LUXURY THEME
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Define in globals.css as CSS custom properties AND extend in
+tailwind.config.ts so Tailwind classes can use them.
+
+:root {
+  --bg-primary:    #0e0e0e;
+  --bg-surface:    #161616;
+  --bg-card:       #1c1c1c;
+  --bg-footer:     #111111;
+  --accent:        #b89b6a;
+  --accent-dark:   #8a7249;
+  --accent-wa:     #1a3a1f;
+  --accent-wa-fg:  #a8d5b0;
+  --text-primary:  #e8e0d4;
+  --text-muted:    #7a7166;
+  --text-inverse:  #0e0e0e;
+  --divider:       #242424;
+  --border:        #2a2a2a;
+  --page-pad:      24px;
+  --ease-luxury:   cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-reveal:   cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+Tailwind config extension (tailwind.config.ts):
+  colors: {
+    bg: { primary: '#0e0e0e', surface: '#161616', card: '#1c1c1c', footer: '#111111' },
+    accent: { DEFAULT: '#b89b6a', dark: '#8a7249', wa: '#1a3a1f', waFg: '#a8d5b0' },
+    brand: { primary: '#e8e0d4', muted: '#7a7166', inverse: '#0e0e0e' }
+  }
+  fontFamily: {
+    display: ['var(--font-cormorant)', 'Georgia', 'serif'],
+    body:    ['var(--font-jost)', 'system-ui', 'sans-serif']
+  }
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TYPOGRAPHY RULES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Fonts: Load via next/font/google in layout.tsx
+  const cormorant = Cormorant_Garamond({
+    subsets: ['latin'],
+    weight: ['300', '400', '500'],
+    style: ['normal', 'italic'],
+    variable: '--font-cormorant'
+  })
+  const jost = Jost({
+    subsets: ['latin'],
+    weight: ['200', '300', '400', '500'],
+    variable: '--font-jost'
+  })
+
+Scale:
+  Display XL : text-[56px] md:text-[72px] · font-display · font-light · leading-none
+  Display L  : text-[40px] md:text-[52px] · font-display · font-light · leading-[1.05]
+  Display M  : text-[28px] md:text-[36px] · font-display · font-normal · leading-[1.15]
+  Eyebrow    : text-[10px] · font-body · font-medium · tracking-[4px] · uppercase · text-accent
+  Body       : text-[14px] · font-body · font-light · leading-[1.85]
+  Caption    : text-[11px] · font-body · font-normal · tracking-[1px]
+  Price      : text-[14px] · font-body · font-medium · text-accent
+  CTA Label  : text-[11px] · font-body · font-medium · tracking-[2.5px] · uppercase
+
+ABSOLUTE RULES:
+- NEVER use font-bold (font-weight 700) anywhere in the project
+- Italic = <em> or font-italic class, only in display headings
+- Eyebrow = always text-accent + tracking-[4px] + uppercase
+- NO text-shadow anywhere. NO glow. NO outline on text.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+COLOR RULES — ABSOLUTE CONSTRAINTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✓  ONLY solid colors everywhere
+✓  Hero image overlay: bg-[#0e0e0e] opacity-[0.54] — solid, never gradient
+✗  NO Tailwind gradient classes (bg-gradient-*, from-*, to-*, via-*)
+✗  NO glassmorphism (backdrop-blur, bg-white/10 style patterns)
+✗  NO box-shadow stacking
+✗  NO neon, glow, luminance, or bloom effects
+✗  NO border-radius above 4px on cards (luxury = angular, not bubbly)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TYPESCRIPT INTERFACES — types/index.ts
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Generate these exact interfaces:
+
+export interface RestaurantInfo {
+  name: string
+  tagline: string
+  established: string
+  rating: string
+  covers: string
+  phone: string
+  whatsapp: string
+  address: string
+  mapUrl: string
+  mapEmbedUrl: string
+  hours: string
+  speciality: string
+}
+
+export interface MenuItem {
+  id: string
+  name: string
+  description: string
+  price: number
+  category: 'veg' | 'non-veg' | 'south-indian' | 'beverages' | 'salads'
+  imageUrl: string
+  isVeg: boolean
+  isSignature?: boolean
+}
+
+export interface MenuCategory {
+  id: string
+  label: string
+  slug: 'all' | 'veg' | 'non-veg' | 'south-indian' | 'beverages' | 'salads'
+}
+
+export interface Review {
+  id: string
+  quote: string
+  reviewer: string
+  source: 'Google' | 'Zomato' | 'TripAdvisor'
+  rating: number
+  isHero?: boolean
+}
+
+export interface SignatureDishData {
+  name: string
+  subtitle: string
+  price: number
+  description: string
+  imageUrl: string
+}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+DATA FILE — lib/data.ts
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Populate with realistic demo data for "Munchies Cafe" restaurant.
+Use real Unsplash food image URLs (https://images.unsplash.com/photo-...)
+for all imageUrl fields. Pick high-quality Indian food photography URLs.
+
+Include:
+- restaurantInfo: RestaurantInfo (all fields filled)
+- menuItems: MenuItem[] (minimum 16 items across all categories)
+- menuCategories: MenuCategory[] (all 6 categories)
+- reviews: Review[] (1 hero + 3 compact)
+- signatureDish: SignatureDishData
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CUSTOM HOOK — hooks/useGSAP.ts
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+'use client'
+import { useEffect, useRef } from 'react'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
+
+export function useGSAP(
+  callback: (gsap: typeof import('gsap').gsap, ScrollTrigger: typeof ScrollTrigger) => void,
+  deps: React.DependencyList = []
+) {
+  const ctx = useRef<gsap.Context | null>(null)
+  useEffect(() => {
+    ctx.current = gsap.context(() => {
+      callback(gsap, ScrollTrigger)
+    })
+    return () => ctx.current?.revert()
+  }, deps)
+}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+COMPONENT: app/layout.tsx
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+- Import and configure Cormorant_Garamond + Jost via next/font/google
+- Apply both font CSS variables to <html> tag
+- Set <html> className to include both font variables
+- metadata: title "Munchies Cafe — Fine Dining", description, viewport
+- Render: <Header />, {children}, <StickyBar />, <Footer />
+- body: bg-bg-primary text-brand-primary font-body
+- body: pb-[72px] (clears sticky bottom bar)
+- antialiased text rendering
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+COMPONENT: components/Header.tsx
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+'use client'
+- position: fixed top-0 left-0 right-0 z-[900]
+- flex justify-between items-center
+- padding: px-6 py-[18px]
+- Transition: bg and py on scroll via useEffect + window scroll listener
+  Default: bg-transparent
+  Scrolled (>80px): bg-bg-primary border-b border-divider py-3
+- LEFT: Restaurant name "Munchies Cafe" — font-display text-[20px] font-medium tracking-[3px]
+  Style the "Z" in text-accent
+- RIGHT: <a href="tel:+919508351404"> button
+  bg-accent text-text-inverse text-[10px] font-medium tracking-[2px] uppercase
+  px-[18px] py-[9px] rounded-[2px]
+  Text: "CALL NOW"
+- Add aria-label to call button for accessibility
+- Clean up scroll event listener on unmount
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+COMPONENT: components/Hero.tsx
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+'use client'
+- Full section: h-[100svh] min-h-[620px] relative overflow-hidden
+
+IMAGE LAYER:
+- div.hero-img-wrap: absolute inset-0
+- next/image: fill priority alt="Munchies Cafe fine dining"
+  src: high-quality Indian restaurant/food Unsplash URL
+- On mount: add 'loaded' class after 300ms
+  CSS transition: scale 1.06 → 1.0 over 7s var(--ease-luxury)
+  (CSS in globals.css: .hero-img-wrap img { transform: scale(1.06); transition: transform 7s ... })
+  (.hero-img-wrap.loaded img { transform: scale(1); })
+
+OVERLAY LAYER:
+- div: absolute inset-0 bg-[#0e0e0e] opacity-[0.54] z-[1]
+
+CONTENT LAYER:
+- div: absolute bottom-0 left-0 right-0 z-[2] px-6 pb-14
+
+  Eyebrow: span — text-[10px] font-medium tracking-[4px] uppercase text-accent block mb-3
+  Text: "FINE DINING · EST. 2019"
+  GSAP: opacity 0→1, duration 0.6s, delay 0.2s
+
+  H1: font-display text-[clamp(52px,14vw,80px)] font-light leading-none text-white
+  Text: "<em>Z</em>araan" (em = italic in Cormorant, color white)
+  GSAP: translateY(30px)→0 + opacity 0→1, duration 0.9s, delay 0.4s, ease expo.out
+
+  Tagline: p — text-[13px] font-light text-[rgba(232,224,212,0.65)] tracking-[0.5px] mt-3
+  Text: "Where every plate tells a story."
+  GSAP: opacity 0→1, duration 0.7s, delay 0.7s
+
+  CTA Grid: div — grid grid-cols-2 gap-[10px] mt-7
+  GSAP: opacity 0→1, duration 0.6s, delay 1s
+
+  Button 1 — CALL NOW:
+    <a href="tel:+919508351404">
+    col-span-1, h-[50px], bg-accent, text-text-inverse
+    text-[11px] font-medium tracking-[2px] uppercase rounded-[2px]
+    flex items-center justify-center gap-2
+    Text: "📞 Call Now"
+
+  Button 2 — VIEW MENU:
+    <a href="#menu">
+    col-span-1, h-[50px]
+    border border-[rgba(184,155,106,0.45)] text-brand-primary bg-[rgba(14,14,14,0.35)]
+    same font/tracking/rounding as Button 1
+    Text: "View Menu"
+
+  Button 3 — WHATSAPP:
+    <a href="https://wa.me/919508351404">
+    col-span-2, h-[46px], bg-accent-wa, text-accent-waFg
+    same font spec
+    Text: "💬 Order on WhatsApp"
+
+  Button 4 — BOOK TABLE:
+    <a href="mailto:Munchies Cafe@example.com">
+    col-span-2, h-[44px]
+    border border-border text-text-muted bg-transparent
+    Text: "Book a Table"
+
+SCROLL HINT (decorative):
+- div: absolute bottom-5 right-6 z-[3] flex flex-col items-center gap-[6px]
+- div: w-px h-11 bg-accent (animate with CSS keyframes: scroll-line)
+- span: text-[8px] tracking-[3px] text-accent uppercase [writing-mode:vertical-rl]
+  Text: "scroll"
+- Add CSS in globals.css:
+  @keyframes scrollLine {
+    0%   { transform: scaleY(0); transform-origin: top; }
+    50%  { transform: scaleY(1); transform-origin: top; }
+    51%  { transform: scaleY(1); transform-origin: bottom; }
+    100% { transform: scaleY(0); transform-origin: bottom; }
+  }
+  .scroll-line { animation: scrollLine 2.2s ease-in-out infinite; }
+
+GSAP: Use useGSAP hook. Build a GSAP timeline on mount.
+All animations listed above go into one gsap.timeline().
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+COMPONENT: components/MarqueeStrip.tsx
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+- No 'use client' needed — pure CSS animation
+- div: bg-accent overflow-hidden h-9 flex items-center
+- Inner div: flex whitespace-nowrap
+  CSS animation: translateX(0) → translateX(-50%), 22s linear infinite
+  (add to globals.css as @keyframes marquee + .marquee-inner class)
+- Text repeated TWICE inside the div (required for seamless loop):
+  "OPEN DAILY · 12PM TO 11PM · DINE IN · TAKEAWAY · PRIVATE EVENTS · ZOMATO 4.8★ · "
+- Each text block: text-[10px] font-medium tracking-[4px] uppercase text-text-inverse
+- Add globals.css:
+  @keyframes marquee { 0% { transform: translateX(0) } 100% { transform: translateX(-50%) } }
+  .marquee-inner { animation: marquee 22s linear infinite; }
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+COMPONENT: components/SignatureDish.tsx
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+'use client'
+Props: { dish: SignatureDishData }
+
+- section: bg-bg-primary pt-[88px]
+
+Label row:
+- px-6: span eyebrow "CHEF'S SIGNATURE"
+
+Cinematic image block:
+- div.sig-image: mx-6 mt-5 relative overflow-hidden h-[64vw] max-h-[400px]
+- next/image: fill object-cover object-center
+- Overlay badge: absolute bottom-4 left-4 bg-bg-primary border-l-2 border-accent px-4 py-[10px]
+  Dish name: font-display italic text-[18px] text-brand-primary
+  Sub-label: text-[11px] tracking-[1px] text-text-muted — "₹ {price} · Chef's Recommendation"
+
+GSAP ScrollTrigger on image:
+  gsap.from('.sig-image img', {
+    scrollTrigger: { trigger: '.sig-image', start: 'top 85%' },
+    scale: 1.08, duration: 1.4, ease: 'power2.out'
+  })
+
+Parallax on scroll:
+  gsap.to('.sig-image img', {
+    scrollTrigger: {
+      trigger: '.sig-image', start: 'top bottom',
+      end: 'bottom top', scrub: 1.5
+    },
+    y: -40, ease: 'none'
+  })
+
+Text block:
+- px-6 pt-9
+
+  Headline: font-display font-light text-[44px] leading-[1.05]
+  "<em>A dish</em> that has made us famous."
+  GSAP: opacity 0→1, translateY(28px)→0, start 'top 85%', duration 0.9s
+
+  Description: text-[13px] font-light text-text-muted leading-[1.9] mt-4
+  "Slow-braised overnight. Finished tableside. Best experienced in silence."
+
+  Divider: div w-12 h-px bg-accent my-5
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+COMPONENT: components/ExperienceBar.tsx
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+'use client'
+Props: { info: RestaurantInfo }
+
+- section: bg-bg-surface border-t border-b border-divider mt-12 px-6 py-8
+
+Stats array (hardcoded from info):
+  [
+    { value: info.established, label: 'EST. YEAR' },
+    { value: info.rating + ' ★', label: 'ZOMATO RATING' },
+    { value: info.covers, label: 'COVERS' }
+  ]
+
+- div: flex justify-between items-center
+
+Each stat cell:
+- div: flex-1 flex flex-col items-center text-center
+- Value: font-display font-light text-[36px] text-accent
+- Label: text-[9px] font-medium tracking-[3px] uppercase text-text-muted mt-1
+
+Dividers between cells:
+- div: w-px h-10 bg-divider self-center (between each pair)
+
+GSAP ScrollTrigger stagger:
+  gsap.from('.stat-cell', {
+    scrollTrigger: { trigger: section, start: 'top 80%' },
+    opacity: 0, y: 20, stagger: 0.15, duration: 0.8, ease: 'power2.out'
+  })
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+COMPONENT: components/Menu.tsx
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+'use client'
+Props: { items: MenuItem[], categories: MenuCategory[] }
+State: activeCategory — useState<string>('all')
+
+- section id="menu": bg-bg-primary py-[88px]
+
+Header: px-6
+  Eyebrow: "OUR MENU"
+  H2: font-display font-light text-[40px] leading-[1.05]
+  "<em>Crafted</em> with intention."
+
+Category pills row:
+- div: flex gap-2 overflow-x-auto px-6 pb-5 mt-6 scrollbar-hide
+  (add .scrollbar-hide to globals.css: scrollbar-width: none; ::-webkit-scrollbar { display: none; })
+- Each pill: <button onClick={() => setActiveCategory(cat.slug)}>
+  Base: border border-border text-text-muted text-[10px] font-medium
+        tracking-[2px] uppercase px-[18px] py-2 rounded-[2px] whitespace-nowrap
+        transition-colors duration-200 flex-shrink-0
+  Active: bg-accent text-text-inverse border-accent
+
+Divider: div h-px bg-divider mx-6 mb-0
+
+Filtered items:
+  const filtered = activeCategory === 'all'
+    ? items
+    : items.filter(i => i.category === activeCategory)
+
+Group items by category. Render category header then items within.
+
+Category header (between groups):
+- h3: font-display italic font-light text-[28px] text-brand-primary
+      border-l-2 border-accent pl-[14px] my-10 mx-6
+
+Each menu item card: div.menu-card
+- px-6 py-[18px] border-b border-divider
+- flex items-center gap-[14px]
+
+  LEFT image:
+  - div: w-[76px] h-[76px] flex-shrink-0 relative overflow-hidden rounded-[2px]
+  - next/image: fill object-cover
+
+  CENTER text: (flex-1)
+  - Name: text-[14px] font-normal text-brand-primary
+  - Description: text-[12px] font-light text-text-muted leading-[1.6] mt-1
+  - Veg badge (if isVeg):
+    div: w-2 h-2 rounded-none border border-green-600 bg-green-600 inline-block mr-1
+
+  RIGHT price: (flex-shrink-0 self-start)
+  - span: text-[14px] font-medium text-accent
+  - "₹{price}"
+
+GSAP stagger on menu cards (re-run on category change via useEffect):
+  gsap.from('.menu-card', {
+    opacity: 0, x: -14, duration: 0.7,
+    stagger: 0.06, ease: 'power2.out'
+  })
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+COMPONENT: components/About.tsx
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+'use client'
+
+- section: bg-bg-surface py-[88px] px-6
+
+BEAT 1:
+  Eyebrow: "OUR STORY"
+  H2: font-display italic font-light text-[34px] leading-[1.2] text-brand-primary mt-3
+  "Born in a small cafe. Served with a big heart."
+  GSAP: translateY(40px)→0 + opacity 0→1, duration 1s, ease power2.out
+
+  Divider: div w-10 h-px bg-accent my-5
+
+BEAT 2:
+  p: text-[14px] font-light text-text-muted leading-[1.9]
+  "We cook the way our mothers taught us — slowly, with whole spices,
+   and no shortcuts. Every dish carries a memory.
+   Every guest leaves with one."
+
+BEAT 3:
+  Image: div: -mx-6 mt-8 relative h-[56vw] max-h-[320px] overflow-hidden
+  next/image: fill object-cover object-center
+  Use a cafe/chef hands Unsplash URL
+
+  Caption: p: text-[11px] font-normal text-text-muted tracking-[1px] mt-3
+  "Chef Arjun · Head of cafe since 2014"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+COMPONENT: components/Reviews.tsx
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+'use client'
+Props: { reviews: Review[] }
+
+const heroReview = reviews.find(r => r.isHero)
+const compactReviews = reviews.filter(r => !r.isHero)
+
+- section: bg-bg-primary py-[88px] px-6
+
+Eyebrow: "WHAT GUESTS SAY"
+
+HERO REVIEW block: relative mt-6
+  Opening quote mark: span — absolute -top-4 -left-2
+    font-display text-[80px] font-light text-accent opacity-30 leading-none
+    Content: '"'
+  Stars: render rating × '★' — text-accent text-[14px] tracking-[2px]
+  Quote: p — font-display italic font-light text-[26px] leading-[1.4]
+              text-brand-primary mt-4 relative z-10
+  Reviewer: p — text-[12px] font-normal text-text-muted mt-4
+  Source badge: span — text-[9px] tracking-[2px] uppercase text-accent ml-2
+
+COMPACT REVIEW CARDS: (map over compactReviews)
+  div.review-card: bg-bg-card border border-border rounded-[2px] p-[18px] mt-4
+  Stars: text-[12px] text-accent
+  Quote: text-[13px] font-light text-text-muted mt-2 line-clamp-2
+  Name + source: text-[11px] text-text-muted mt-3 + source badge
+
+GSAP ScrollTrigger stagger on .review-card:
+  opacity 0→1, translateY(20px)→0, stagger 0.15s, start 'top 85%'
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+COMPONENT: components/Contact.tsx
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Props: { info: RestaurantInfo }
+
+- section: bg-bg-surface pt-[88px]
+
+Header: px-6
+  Eyebrow: "FIND US"
+  H2: font-display font-light text-[36px] mt-3
+  "<em>Come as guests.</em> Leave as family."
+
+Map iframe:
+  - div: w-full mt-6 relative h-[56vw] max-h-[320px]
+  - iframe: width="100%" height="100%" style="border:0" loading="lazy"
+    src={info.mapEmbedUrl} — Google Maps embed URL
+    allowFullScreen referrerPolicy="no-referrer-when-downgrade"
+
+Contact tiles: div px-6 mt-0
+  Array of contact rows:
+  [
+    { icon: '📍', label: info.address, href: info.mapUrl },
+    { icon: '📞', label: info.phone, href: `tel:${info.phone}` },
+    { icon: '💬', label: 'Order on WhatsApp', href: `https://wa.me/${info.whatsapp}` },
+    { icon: '🕐', label: info.hours, href: null }
+  ]
+
+  Each row: a (or div if no href) —
+    flex items-center gap-[14px] py-4 border-b border-divider
+    Icon span: text-accent text-[18px]
+    Label: text-[13px] font-light text-brand-primary flex-1
+    Chevron (if href): span text-accent ml-auto — "→"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+COMPONENT: components/Footer.tsx
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+- footer: bg-bg-footer pt-[88px] pb-10 px-6
+
+Restaurant name as brand signature:
+  h2: font-display font-light text-[52px] tracking-[2px] text-brand-primary leading-none
+  Text: "Munchies Cafe"
+
+Closing line:
+  p: text-[13px] font-light italic text-text-muted mt-2
+  "Crafted with care. Served with love."
+
+Divider: div h-px bg-divider my-9
+
+Nav links:
+  nav: flex flex-wrap gap-6
+  Links: Menu · About · Reviews · Contact (anchor links #menu, #about, #reviews, #contact)
+  Each: a text-[11px] font-normal tracking-[2px] uppercase text-text-muted
+  hover: text-accent transition-colors
+
+Social icons row: div flex gap-[10px] mt-6
+  Each platform (Instagram, Google Maps, Zomato):
+    a: w-8 h-8 border border-border flex items-center justify-center
+       rounded-[2px] text-text-muted hover:border-accent hover:text-accent
+       transition-colors text-[14px]
+  Use unicode icons or simple emoji — no icon library needed
+
+Copyright:
+  p: text-[11px] font-light text-text-muted opacity-40 mt-10
+  "© 2025 Munchies Cafe. All rights reserved."
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+COMPONENT: components/StickyBar.tsx
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+This is the highest-conversion element. Never hidden.
+
+'use client'
+Props: { info: RestaurantInfo }
+
+- div: fixed bottom-0 left-0 right-0 z-[999]
+       bg-bg-surface border-t border-border
+       px-6 py-[10px] pb-[max(10px,env(safe-area-inset-bottom))]
+       flex justify-around items-center
+
+3 action columns:
+  <a href={`tel:${info.phone}`} className="flex flex-col items-center gap-[5px] py-[6px] active:opacity-65">
+    <span className="text-[20px]">📞</span>
+    <span className="text-[9px] font-medium tracking-[2px] uppercase text-text-muted">CALL</span>
+  </a>
+
+  <a href={`https://wa.me/${info.whatsapp}`} className="...same... ">
+    <span className="text-[20px]">💬</span>
+    <span className="text-[9px] font-medium tracking-[2px] uppercase text-[#a8d5b0]">WHATSAPP</span>
+  </a>
+
+  <a href={info.mapUrl} target="_blank" rel="noopener noreferrer" className="...same...">
+    <span className="text-[20px]">📍</span>
+    <span className="text-[9px] font-medium tracking-[2px] uppercase text-text-muted">MAPS</span>
+  </a>
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+GSAP ANIMATION MASTER RULES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Always use the useGSAP custom hook (never raw useEffect for GSAP).
+Always return cleanup via gsap.context().revert().
+Always import gsap and ScrollTrigger from 'gsap' and 'gsap/ScrollTrigger'.
+Register: gsap.registerPlugin(ScrollTrigger) — once, in useGSAP hook.
+
+Animation philosophy:
+  SLOW = LUXURY. Fast = cheap.
+  Default duration: 0.85s–1.2s
+  Default ease: 'power2.out' or 'expo.out'
+  NO bounce. NO elastic. NO spring.
+  All ScrollTrigger animations: once: true
+
+Hero timeline (DOMContentLoaded, gsap.timeline):
+  +0.2s : eyebrow — opacity 0→1, 0.6s
+  +0.4s : h1 — translateY(30)→0 + opacity 0→1, 0.9s, expo.out
+  +0.7s : tagline — opacity 0→1, 0.7s
+  +1.0s : CTA grid — opacity 0→1, 0.6s
+  +0.3s : (CSS handles image scale via .loaded class)
+
+General reveal pattern (for all non-hero scroll elements):
+  gsap.from(element, {
+    scrollTrigger: { trigger: element, start: 'top 82%', once: true },
+    opacity: 0, y: 32, duration: 0.9, ease: 'power2.out'
+  })
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CONFIGURATION FILES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+next.config.js:
+  /** @type {import('next').NextConfig} */
+  const nextConfig = {
+    images: {
+      remotePatterns: [
+        { protocol: 'https', hostname: 'images.unsplash.com' },
+        { protocol: 'https', hostname: 'plus.unsplash.com' }
+      ]
+    }
+  }
+  module.exports = nextConfig
+
+tsconfig.json:
+  {
+    "compilerOptions": {
+      "strict": true,
+      "target": "ES2017",
+      "lib": ["dom", "dom.iterable", "esnext"],
+      "jsx": "preserve",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "paths": { "@/*": ["./*"] }
+    }
+  }
+
+package.json dependencies:
+  "next": "14.2.x"
+  "react": "^18"
+  "react-dom": "^18"
+  "typescript": "^5"
+  "gsap": "^3.12.x"
+  "tailwindcss": "^3.4.x"
+  "postcss": "^8"
+  "autoprefixer": "^10"
+  "@types/node": "^20"
+  "@types/react": "^18"
+  "@types/react-dom": "^18"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ABSOLUTE DESIGN PROHIBITIONS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+The output must NEVER contain any of the following:
+✗  Any Tailwind gradient class (bg-gradient-*, from-*, to-*, via-*)
+✗  font-bold or font-extrabold anywhere
+✗  rounded-xl, rounded-2xl, rounded-full on cards
+✗  shadow-xl, shadow-2xl, drop-shadow on cards
+✗  backdrop-blur, bg-white/10 (glassmorphism)
+✗  bounce, elastic, spring in any animation
+✗  Carousel, Swiper, Slider components
+✗  Inter, Roboto, Poppins in any font stack
+✗  Purple, teal, bright orange in any color
+✗  Hamburger menu in the header
+✗  Team grid in the about section
+✗  Emoji in section headings (only in buttons and contact tiles)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FINAL OUTPUT INSTRUCTION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Output every file completely. No placeholders like "// add code here".
+No truncation. No summaries. Every file must be production-ready,
+TypeScript strict-compliant, and render without errors on
+`npm run dev`.
+
+Output order:
+1. package.json
+2. next.config.js
+3. tsconfig.json
+4. tailwind.config.ts
+5. app/globals.css
+6. types/index.ts
+7. lib/data.ts
+8. hooks/useGSAP.ts
+9. app/layout.tsx
+10. app/page.tsx
+11. components/Header.tsx
+12. components/Hero.tsx
+13. components/MarqueeStrip.tsx
+14. components/SignatureDish.tsx
+15. components/ExperienceBar.tsx
+16. components/Menu.tsx
+17. components/About.tsx
+18. components/Reviews.tsx
+19. components/Contact.tsx
+20. components/Footer.tsx
+21. components/StickyBar.tsx
+
+Each file: show filename as a comment header, then complete code.
+Do not stop until all 21 files are fully written.
+
+═══════════════════════════════════════════════════════════════════════
+END OF PROMPT
+═══════════════════════════════════════════════════════════════════════

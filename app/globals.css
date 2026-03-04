@@ -1,0 +1,91 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-primary: #0e0e0e;
+  --bg-surface: #161616;
+  --bg-card: #1c1c1c;
+  --bg-footer: #111111;
+  --accent: #b89b6a;
+  --accent-dark: #8a7249;
+  --accent-wa: #1a3a1f;
+  --accent-wa-fg: #a8d5b0;
+  --text-primary: #e8e0d4;
+  --text-muted: #7a7166;
+  --text-inverse: #0e0e0e;
+  --divider: #242424;
+  --border: #2a2a2a;
+  --page-pad: 24px;
+  --ease-luxury: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-reveal: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ── Hero image zoom ── */
+.hero-img-wrap img {
+  transform: scale(1.06);
+  transition: transform 7s var(--ease-luxury);
+}
+
+.hero-img-wrap.loaded img {
+  transform: scale(1);
+}
+
+/* ── Scroll hint line ── */
+@keyframes scrollLine {
+  0% {
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+  50% {
+    transform: scaleY(1);
+    transform-origin: top;
+  }
+  51% {
+    transform: scaleY(1);
+    transform-origin: bottom;
+  }
+  100% {
+    transform: scaleY(0);
+    transform-origin: bottom;
+  }
+}
+
+.scroll-line {
+  animation: scrollLine 2.2s ease-in-out infinite;
+}
+
+/* ── Marquee ── */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-inner {
+  animation: marquee 22s linear infinite;
+}
+
+/* ── Scrollbar hide utility ── */
+.scrollbar-hide {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* ── Smooth scroll ── */
+html {
+  scroll-behavior: smooth;
+}
+
+/* ── Selection color ── */
+::selection {
+  background: rgba(184, 155, 106, 0.3);
+  color: #e8e0d4;
+}
